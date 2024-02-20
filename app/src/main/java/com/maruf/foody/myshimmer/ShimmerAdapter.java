@@ -37,7 +37,6 @@ public final class ShimmerAdapter extends RecyclerView.Adapter<ShimmerViewHolder
     @RecyclerView.Orientation
     private int mLayoutOrientation;
 
-
     ShimmerAdapter(@LayoutRes int layout, int itemCount, int layoutManagerType,
                    ItemViewType itemViewType, Shimmer shimmer, int layoutOrientation) {
         this.layout = layout;
@@ -47,7 +46,6 @@ public final class ShimmerAdapter extends RecyclerView.Adapter<ShimmerViewHolder
         this.shimmer = shimmer;
         this.mLayoutOrientation = layoutOrientation;
     }
-
     @Override
     public int getItemViewType(int position) {
         return (itemViewType != null)
