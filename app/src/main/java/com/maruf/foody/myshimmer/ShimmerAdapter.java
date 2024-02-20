@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.Shimmer;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.maruf.foody.R;
-
-
 public final class ShimmerAdapter extends RecyclerView.Adapter<ShimmerViewHolder> {
 
     /**
