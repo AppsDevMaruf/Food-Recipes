@@ -2,14 +2,13 @@ package com.maruf.foody
 
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maruf.foody.data.Repository
 import com.maruf.foody.model.FoodRecipe
 import com.maruf.foody.utils.NetworkResult
+import com.maruf.foody.utils.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -27,7 +26,7 @@ class MainViewModel @Inject constructor(@ApplicationContext private val appConte
 
     private suspend fun getRecipesSafeCall(queries: Map<String, String>) {
         recipeResponse.value = NetworkResult.Loading()
-        if (hasInternetConnection()) {
+        if (NetworkUtils.hasInternetConnection(appContext)) {
             try {
                 val response = repository.remote.getRecipes(queries)
                 recipeResponse.value = handleFoodRecipesResponse(response)
@@ -67,16 +66,4 @@ class MainViewModel @Inject constructor(@ApplicationContext private val appConte
     }
 
 
-    private fun hasInternetConnection(): Boolean {
-        val connectivityManager = appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-        return when {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            else -> false
-        }
-
-    }
 }
