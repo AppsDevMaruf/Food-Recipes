@@ -1,5 +1,6 @@
-package com.maruf.foody
+package com.maruf.foody.data
 
+import com.maruf.foody.data.network.FoodRecipesApi
 import com.maruf.foody.model.FoodRecipe
 import retrofit2.Response
 import javax.inject.Inject
