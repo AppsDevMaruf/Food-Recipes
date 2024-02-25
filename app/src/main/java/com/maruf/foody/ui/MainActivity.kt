@@ -1,13 +1,13 @@
-package com.maruf.foody
+package com.maruf.foody.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.maruf.foody.R
 
 import com.maruf.foody.databinding.ActivityMainBinding
 
