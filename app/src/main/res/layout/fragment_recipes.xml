@@ -11,6 +11,7 @@
         android:id="@+id/shimmerFrameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,11 +55,11 @@
         android:src="@drawable/ic_restaurant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:contentDescription="@string/todo" />
 
     <ImageView
         android:id="@+id/error_imageView"
-
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:alpha="0.5"
@@ -67,11 +69,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recyclerview"
-        app:layout_constraintVertical_bias="0.37" />
+        app:layout_constraintVertical_bias="0.37"
+        android:contentDescription="@string/todo" />
 
     <TextView
         android:id="@+id/error_textView"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
