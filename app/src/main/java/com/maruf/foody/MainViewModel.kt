@@ -2,10 +2,13 @@ package com.maruf.foody
 
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.maruf.foody.data.Repository
+import com.maruf.foody.data.database.RecipesEntity
 import com.maruf.foody.model.FoodRecipe
 import com.maruf.foody.utils.Constants.Companion.API_KEY
 import com.maruf.foody.utils.Constants.Companion.DEFAULT_DIET_TYPE
@@ -21,19 +24,29 @@ import com.maruf.foody.utils.NetworkResult
 import com.maruf.foody.utils.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(@ApplicationContext private val appContext: Context, private val repository: Repository) : ViewModel() {
-
-    val recipeResponse: MutableLiveData<NetworkResult<FoodRecipe>?> = MutableLiveData()
     private var mealType = DEFAULT_MEAL_TYPE
     private var dietType = DEFAULT_DIET_TYPE
-
     var networkStatus = false
     var backOnline = false
+
+    /** ROOM DATABASE */
+
+    val readRecipes:LiveData<List<RecipesEntity>> = repository.local.readDatabase().asLiveData()
+
+    private fun insertRecipes(recipesEntity: RecipesEntity) = viewModelScope.launch(Dispatchers.IO){
+        repository.local.insertRecipes(recipesEntity)
+    }
+
+    /** RETROFIT */
+    val recipeResponse: MutableLiveData<NetworkResult<FoodRecipe>?> = MutableLiveData()
+
 
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
         getRecipesSafeCall(queries)
@@ -45,6 +58,12 @@ class MainViewModel @Inject constructor(@ApplicationContext private val appConte
             try {
                 val response = repository.remote.getRecipes(queries)
                 recipeResponse.value = handleFoodRecipesResponse(response)
+
+                val foodRecipe = recipeResponse.value!!.data
+                if (foodRecipe!=null){
+                    offlineCacheRecipes(foodRecipe)
+                }
+
             } catch (_: Exception) {
                 recipeResponse.value = NetworkResult.Error("Recipes not found.")
             }
@@ -54,6 +73,13 @@ class MainViewModel @Inject constructor(@ApplicationContext private val appConte
         }
 
     }
+
+    private fun offlineCacheRecipes(foodRecipe: FoodRecipe) {
+        val recipesEntity = RecipesEntity(foodRecipe)
+        insertRecipes(recipesEntity)
+
+    }
+
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
 
@@ -86,7 +112,7 @@ class MainViewModel @Inject constructor(@ApplicationContext private val appConte
         return queries
     }*/
 
-    private fun handleFoodRecipesResponse(response: Response<FoodRecipe>): NetworkResult<FoodRecipe>? {
+    private fun handleFoodRecipesResponse(response: Response<FoodRecipe>): NetworkResult<FoodRecipe> {
         when {
             response.message().toString().contains("timeout") -> {
                 return NetworkResult.Error("Timeout")
