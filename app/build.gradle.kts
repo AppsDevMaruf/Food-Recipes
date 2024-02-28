@@ -67,10 +67,6 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
 
-    // Data binding
-    kapt("com.android.databinding:compiler:3.2.0-alpha10")
-    kapt("androidx.databinding:databinding-common:8.2.2")
-
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
@@ -104,8 +100,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     // Shimmer
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
-//    implementation("com.todkars:shimmer-recyclerview:0.4.1")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
     // Jsoup
     implementation("org.jsoup:jsoup:1.13.1")

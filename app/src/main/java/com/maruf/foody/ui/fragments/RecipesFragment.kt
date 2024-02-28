@@ -20,14 +20,8 @@ class RecipesFragment : Fragment() {
     private val mainViewModel by viewModels<MainViewModel>()
     private val mAdapter by lazy { RecipesAdapter() }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        binding = FragmentRecipesBinding.inflate(inflater)
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentRecipesBinding.inflate(inflater, container, false)
         setupRecyclerView()
         requestApiData()
         return binding.root
@@ -41,7 +35,8 @@ class RecipesFragment : Fragment() {
                     hideShimmerEffect()
                     response.data?.let {
                         Log.d("TAG", "requestApiData: ${it.results.size}")
-                        mAdapter.updateList(it.results as MutableList) }
+                        mAdapter.updateList(it.results) }
+
                     Toast.makeText(requireContext(), "response.data  ${response.data?.results?.size}", Toast.LENGTH_SHORT).show()
                 }
 
@@ -65,14 +60,14 @@ class RecipesFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.recyclerview.adapter = mAdapter
-        showShimmerEffect()
+
     }
 
     private fun showShimmerEffect() {
-        binding.recyclerview.visibility = View.VISIBLE;
+        binding.recyclerview.showShimmer()
     }
 
     private fun hideShimmerEffect() {
-        binding.recyclerview.visibility = View.GONE
+        binding.recyclerview.hideShimmer()
     }
 }
