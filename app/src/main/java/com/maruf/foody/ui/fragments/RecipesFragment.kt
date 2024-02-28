@@ -22,8 +22,8 @@ class RecipesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentRecipesBinding.inflate(inflater, container, false)
-        requestApiData()
         setupRecyclerView()
+        requestApiData()
         return binding.root
     }
 
