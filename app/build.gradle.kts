@@ -104,8 +104,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     // Shimmer
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
-//    implementation("com.todkars:shimmer-recyclerview:0.4.1")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
     // Jsoup
     implementation("org.jsoup:jsoup:1.13.1")
