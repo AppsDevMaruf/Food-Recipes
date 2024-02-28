@@ -18,5 +18,9 @@ class Constants {
         const val DEFAULT_RECIPES_NUMBER = "50"
         const val DEFAULT_MEAL_TYPE = "main course"
         const val DEFAULT_DIET_TYPE = "gluten free"
+
+        // ROOM Database
+        const val DATABASE_NAME = "recipes_database"
+        const val RECIPES_TABLE = "recipes_table"
     }
 }
