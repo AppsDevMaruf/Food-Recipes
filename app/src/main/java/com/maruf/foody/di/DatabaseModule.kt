@@ -2,6 +2,7 @@ package com.maruf.foody.di
 
 import android.content.Context
 import androidx.room.Room
+import com.maruf.foody.data.database.RecipesDao
 import com.maruf.foody.data.database.RecipesDatabase
 import com.maruf.foody.utils.Constants.Companion.DATABASE_NAME
 
@@ -18,10 +19,14 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(context, RecipesDatabase::class.java, DATABASE_NAME).build()
+    fun provideDatabase(@ApplicationContext context: Context): RecipesDatabase {
+        return Room.databaseBuilder(context, RecipesDatabase::class.java, DATABASE_NAME).build()
+    }
 
     @Singleton
     @Provides
-    fun provideDao(database: RecipesDatabase) = database.recipesDao()
+    fun provideDao(database: RecipesDatabase): RecipesDao {
+        return database.recipesDao()
+    }
 
 }
