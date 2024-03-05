@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.maruf.foody.MainViewModel
 import com.maruf.foody.adapters.RecipesAdapter
 import com.maruf.foody.databinding.FragmentRecipesBinding
+import com.maruf.foody.utils.Constants
 import com.maruf.foody.utils.NetworkResult
 import com.maruf.foody.utils.observeOnce
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +44,7 @@ class RecipesFragment : Fragment() {
     }
 
     private fun requestApiData() {
-        Log.d("Online","readDatabase: ")
+        Log.d("Online Api call","readDatabase: ")
         mainViewModel.getRecipes(mainViewModel.applyQueries())
         mainViewModel.recipeResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -58,7 +59,13 @@ class RecipesFragment : Fragment() {
                 }
 
                 is NetworkResult.Error -> {
-                    loadDataFromCache()
+                    if (response.message==Constants.NO_INTERNET_CONNECTION_MGS){
+                        showErrorMgs()
+
+                    }else{
+                        hideErrorMgs()
+                        loadDataFromCache()
+                    }
                     Toast.makeText(requireContext(), response.message.toString(), Toast.LENGTH_SHORT).show()
                 }
 
@@ -69,6 +76,15 @@ class RecipesFragment : Fragment() {
                 else -> {}
             }
         }
+    }
+
+    private fun showErrorMgs() { binding?.errorImageView?.visibility = View.VISIBLE
+        binding?.errorTextView?.visibility = View.VISIBLE
+    }
+
+    private fun hideErrorMgs() {
+        binding?.errorImageView?.visibility = View.GONE
+        binding?.errorTextView?.visibility = View.GONE
     }
 
     private fun loadDataFromCache() {

@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.maruf.foody.data.Repository
 import com.maruf.foody.data.database.RecipesEntity
 import com.maruf.foody.model.FoodRecipe
+import com.maruf.foody.utils.Constants
 import com.maruf.foody.utils.Constants.Companion.API_KEY
 import com.maruf.foody.utils.Constants.Companion.DEFAULT_DIET_TYPE
 import com.maruf.foody.utils.Constants.Companion.DEFAULT_MEAL_TYPE
