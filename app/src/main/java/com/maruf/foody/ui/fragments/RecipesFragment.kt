@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.maruf.foody.MainViewModel
+import com.maruf.foody.R
 import com.maruf.foody.adapters.RecipesAdapter
 import com.maruf.foody.databinding.FragmentRecipesBinding
 import com.maruf.foody.utils.Constants
@@ -20,21 +22,30 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
-    private  var binding: FragmentRecipesBinding? = null
+    private var _binding: FragmentRecipesBinding? = null
+    private val binding get() = _binding!!
     private val mainViewModel by viewModels<MainViewModel>()
     private val mAdapter by lazy { RecipesAdapter() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentRecipesBinding.inflate(inflater, container, false)
+        _binding = FragmentRecipesBinding.inflate(inflater, container, false)
         setupRecyclerView()
         readDatabase()
-        return binding!!.root
+
+        binding.recipeFab.setOnClickListener {
+            findNavController().navigate(R.id.action_recipesFragment_to_recipesBottomSheet)
+            Toast.makeText(
+                requireContext(), "recipeFab", Toast.LENGTH_LONG
+            ).show()
+
+        }
+        return binding.root
     }
 
     private fun readDatabase() {
         mainViewModel.readRecipes.observeOnce(viewLifecycleOwner) { database ->
             if (database.isNotEmpty()) {
-                Log.d("Offline","readDatabase: ")
+                Log.d("Offline", "readDatabase: ")
                 loadDataFromCache()
             } else {
                 requestApiData()
@@ -44,7 +55,7 @@ class RecipesFragment : Fragment() {
     }
 
     private fun requestApiData() {
-        Log.d("Online Api call","readDatabase: ")
+        Log.d("Online Api call", "readDatabase: ")
         mainViewModel.getRecipes(mainViewModel.applyQueries())
         mainViewModel.recipeResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -59,10 +70,10 @@ class RecipesFragment : Fragment() {
                 }
 
                 is NetworkResult.Error -> {
-                    if (response.message==Constants.NO_INTERNET_CONNECTION_MGS){
+                    if (response.message == Constants.NO_INTERNET_CONNECTION_MGS) {
                         showErrorMgs()
 
-                    }else{
+                    } else {
                         hideErrorMgs()
                         loadDataFromCache()
                     }
@@ -78,13 +89,14 @@ class RecipesFragment : Fragment() {
         }
     }
 
-    private fun showErrorMgs() { binding?.errorImageView?.visibility = View.VISIBLE
-        binding?.errorTextView?.visibility = View.VISIBLE
+    private fun showErrorMgs() {
+        binding.errorImageView.visibility = View.VISIBLE
+        binding.errorTextView.visibility = View.VISIBLE
     }
 
     private fun hideErrorMgs() {
-        binding?.errorImageView?.visibility = View.GONE
-        binding?.errorTextView?.visibility = View.GONE
+        binding.errorImageView.visibility = View.GONE
+        binding.errorTextView.visibility = View.GONE
     }
 
     private fun loadDataFromCache() {
@@ -100,20 +112,20 @@ class RecipesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding?.recyclerview?.adapter = mAdapter
+        binding.recyclerview.adapter = mAdapter
 
     }
 
     private fun showShimmerEffect() {
-        binding?.recyclerview?.showShimmer()
+        binding.recyclerview.showShimmer()
     }
 
     private fun hideShimmerEffect() {
-        binding?.recyclerview?.hideShimmer()
+        binding.recyclerview.hideShimmer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding = null
+        _binding = null
     }
 }
