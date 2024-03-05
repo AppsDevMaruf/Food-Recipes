@@ -21,14 +21,25 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
         recipeList = list
         diffResult.dispatchUpdatesTo(this)
     }
-    class MyViewHolder(val binding: RecipesRowLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+
+    class MyViewHolder(val binding: RecipesRowLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(recipe: Result) {
+            binding.result = recipe
+            binding.executePendingBindings()
+
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = RecipesRowLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(view)
     }
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val recipe = recipeList[position]
-        holder.binding.apply {
+        holder.bind(recipe)
+
+   /*     holder.binding.apply {
             titleTextView.text = recipe.title
             descriptionTextView.text = recipe.summary
             clockTextView.text = recipe.readyInMinutes.toString()
@@ -42,8 +53,9 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
             leafTextView.setTextColor(color)
             leafImageView.backgroundTintList = ColorStateList.valueOf(color)
             heartTextView.text = recipe.aggregateLikes.toString()
-        }
+        }*/
     }
+
     override fun getItemCount(): Int {
         Log.d("TAG", "getItemCount: ${recipeList.size}")
         return recipeList.size
