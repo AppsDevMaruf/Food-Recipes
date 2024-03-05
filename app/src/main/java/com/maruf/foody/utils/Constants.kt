@@ -22,5 +22,11 @@ class Constants {
         // ROOM Database
         const val DATABASE_NAME = "recipes_database"
         const val RECIPES_TABLE = "recipes_table"
+        const val  NO_INTERNET_CONNECTION_CODE = 123
+        const val  RECIPES_NOT_FOUND_CODE = 124
+        const val  NO_INTERNET_CONNECTION_MGS = "No Internet Connection."
+        const val  RECIPES_NOT_FOUND_MGS = "Recipes not found."
+
+
     }
 }
